@@ -44,6 +44,3 @@ killall live_slam
 killall rosbag
 killall usb_cam
 killall roscore
-
-
-rosrun lsd_slam_core live_slam /image:=<yourstreamtopic> /camera_info:=<yourcamera_infotopic>
