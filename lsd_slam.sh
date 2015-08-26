@@ -25,22 +25,31 @@ if [ $1 = 1 ]; then
 
 	echo -e "$(tput bold) $(tput setaf 1) open terminal $(tput sgr 0) \t bag file"
 	gnome-terminal -e '/bin/bash -c "rosbag play ~/catkin_ws/bag/LSD_room.bag" '
+
+	read -n1 -r -p "Press space to continue..." key
+
+	killall viewer
+	killall live_slam
+	killall rosbag
+	killall roscore
+
 else
+	
 	echo -e "$(tput bold) $(tput setaf 1) open terminal $(tput sgr 0) \t camera"
-	gnome-terminal -e '/bin/bash -c "rosrun usb_cam usb_cam_node _video_device:="/dev/video1" _camera_info_url:="" " '
+	gnome-terminal -e '/bin/bash -c "rosrun usb_cam usb_cam_node _video_device:="/dev/video0" _camera_info_url:="" " '
 
 	echo -e "$(tput bold) $(tput setaf 1) open terminal $(tput sgr 0) \t slam code"
-	gnome-terminal -e '/bin/bash -c "rosrun lsd_slam_core live_slam /image:=/usb_cam/image_raw _calib:="/home/markus/repositories/cameraCalibration/creative_webcam_fov_in.cfg" " '
+	gnome-terminal -e '/bin/bash -c "rosrun lsd_slam_core live_slam /image:=/usb_cam/image_raw _calib:="/home/markus/repositories/cameraCalibration/creative_webcam_fov_crop.cfg" " '
 
 
 	echo -e "$(tput bold) $(tput setaf 1) open terminal $(tput sgr 0) \t slam viewer"
 	gnome-terminal -e '/bin/bash -c "rosrun lsd_slam_viewer viewer " '
+
+	read -n1 -r -p "Press space to continue..." key
+
+	killall viewer
+	killall live_slam
+	killall usb_cam_node
+	killall roscore
+
 fi
-
-read -n1 -r -p "Press space to continue..." key
-
-killall viewer
-killall live_slam
-killall rosbag
-killall usb_cam
-killall roscore
